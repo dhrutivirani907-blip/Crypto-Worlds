@@ -1,0 +1,453 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    >
+
+    <meta name="theme-color" content="#0b0b12">
+
+    <title>Watch Ads</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at top, #252044 0%, #0b0b12 45%, #060609 100%);
+            color: #ffffff;
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .app {
+            width: 100%;
+            max-width: 430px;
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo {
+            width: 76px;
+            height: 76px;
+            border-radius: 24px;
+            background: linear-gradient(135deg, #7c4dff, #a855f7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 34px;
+            margin-bottom: 20px;
+            box-shadow: 0 15px 45px rgba(124, 77, 255, 0.35);
+        }
+
+        .title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #a7a5b5;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .count-card {
+            width: 100%;
+            padding: 34px 20px;
+            border-radius: 26px;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.35),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            text-align: center;
+            backdrop-filter: blur(15px);
+        }
+
+        .count-label {
+            color: #aaa7b8;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 12px;
+        }
+
+        .count {
+            font-size: 64px;
+            line-height: 1;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffffff, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .count-text {
+            margin-top: 12px;
+            color: #858293;
+            font-size: 13px;
+        }
+
+        .watch-button {
+            width: 100%;
+            margin-top: 22px;
+            height: 60px;
+            border: none;
+            border-radius: 18px;
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            color: white;
+            font-size: 17px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            box-shadow: 0 15px 35px rgba(124, 58, 237, 0.35);
+            transition: transform 0.15s ease, opacity 0.15s ease;
+        }
+
+        .watch-button:active {
+            transform: scale(0.97);
+        }
+
+        .watch-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .info {
+            margin-top: 20px;
+            text-align: center;
+            color: #777486;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .status {
+            margin-top: 14px;
+            min-height: 20px;
+            color: #a78bfa;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .footer {
+            margin-top: 35px;
+            color: #555260;
+            font-size: 11px;
+        }
+
+        @media (max-height: 650px) {
+            .app {
+                min-height: auto;
+            }
+
+            .logo {
+                width: 60px;
+                height: 60px;
+                margin-bottom: 12px;
+            }
+
+            .title {
+                font-size: 24px;
+            }
+
+            .subtitle {
+                margin-bottom: 20px;
+            }
+
+            .count-card {
+                padding: 25px 20px;
+            }
+
+            .count {
+                font-size: 52px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="app">
+
+        <div class="logo">
+            ▶
+        </div>
+
+        <h1 class="title">Watch Ads</h1>
+
+        <p class="subtitle">
+            Watch ads and increase your total count
+        </p>
+
+        <section class="count-card">
+
+            <div class="count-label">
+                Total Ads Watched
+            </div>
+
+            <div id="adsCount" class="count">
+                0
+            </div>
+
+            <div class="count-text">
+                Keep watching to increase your count
+            </div>
+
+        </section>
+
+        <button
+            id="watchButton"
+            class="watch-button"
+            onclick="watchAd()"
+        >
+            ▶ WATCH ADS
+        </button>
+
+        <div id="status" class="status"></div>
+
+        <p class="info">
+            Tap the button to watch an advertisement.<br>
+            Your count is saved automatically.
+        </p>
+
+        <div class="footer">
+            Simple Ads App
+        </div>
+
+    </main>
+
+    <script>
+
+        // ==========================================
+        // MONETAG DIRECT LINK
+        // ==========================================
+
+        const MONETAG_LINK = "https://omg10.com/4/11862822";
+
+
+        // ==========================================
+        // STORAGE KEY
+        // ==========================================
+
+        const STORAGE_KEY = "total_ads_watched";
+
+
+        // ==========================================
+        // GET CURRENT COUNT
+        // ==========================================
+
+        function getAdsCount() {
+
+            const savedCount = localStorage.getItem(STORAGE_KEY);
+
+            if (savedCount === null) {
+                return 0;
+            }
+
+            const count = parseInt(savedCount, 10);
+
+            return Number.isFinite(count) ? count : 0;
+        }
+
+
+        // ==========================================
+        // DISPLAY COUNT
+        // ==========================================
+
+        function updateCount() {
+
+            const count = getAdsCount();
+
+            document.getElementById("adsCount").textContent =
+                count.toLocaleString();
+
+        }
+
+
+        // ==========================================
+        // SAVE COUNT
+        // ==========================================
+
+        function saveAdsCount(count) {
+
+            localStorage.setItem(
+                STORAGE_KEY,
+                String(count)
+            );
+
+        }
+
+
+        // ==========================================
+        // WATCH ADS
+        // ==========================================
+
+        function watchAd() {
+
+            const button =
+                document.getElementById("watchButton");
+
+            const status =
+                document.getElementById("status");
+
+
+            // Prevent multiple clicks
+            button.disabled = true;
+
+            button.textContent = "OPENING AD...";
+
+            status.textContent = "Advertisement opened...";
+
+
+            /*
+             * We store a pending flag before leaving
+             * the page.
+             */
+
+            sessionStorage.setItem(
+                "ad_pending",
+                "1"
+            );
+
+
+            /*
+             * Open Monetag direct link.
+             */
+
+            window.location.href = MONETAG_LINK;
+
+        }
+
+
+        // ==========================================
+        // CHECK RETURN FROM AD
+        // ==========================================
+
+        function checkAdReturn() {
+
+            const pending =
+                sessionStorage.getItem("ad_pending");
+
+
+            if (pending === "1") {
+
+                /*
+                 * Remove pending flag so one return
+                 * only counts once.
+                 */
+
+                sessionStorage.removeItem(
+                    "ad_pending"
+                );
+
+
+                /*
+                 * Increase count.
+                 */
+
+                const currentCount =
+                    getAdsCount();
+
+                const newCount =
+                    currentCount + 1;
+
+
+                saveAdsCount(newCount);
+
+                updateCount();
+
+
+                /*
+                 * Show success message.
+                 */
+
+                document.getElementById("status").textContent =
+                    "✓ Ad counted successfully!";
+
+
+                /*
+                 * Small visual feedback.
+                 */
+
+                const countElement =
+                    document.getElementById("adsCount");
+
+                countElement.animate(
+                    [
+                        {
+                            transform: "scale(1)"
+                        },
+                        {
+                            transform: "scale(1.18)"
+                        },
+                        {
+                            transform: "scale(1)"
+                        }
+                    ],
+                    {
+                        duration: 400,
+                        easing: "ease-out"
+                    }
+                );
+
+            }
+
+        }
+
+
+        // ==========================================
+        // APP START
+        // ==========================================
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                updateCount();
+
+                checkAdReturn();
+
+            }
+        );
+
+
+        // ==========================================
+        // HANDLE RETURN / APP RESUME
+        // ==========================================
+
+        document.addEventListener(
+            "visibilitychange",
+            function () {
+
+                if (
+                    document.visibilityState === "visible"
+                ) {
+
+                    checkAdReturn();
+
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+</html>
+```
